@@ -15,7 +15,7 @@ import com.pedropathing.paths.Path;
 
 @TeleOp(name = "Master")
 public class master extends OpMode {
-
+    public double speed = 0.8;
     private Follower follower; // you added this before
 
     @Override
@@ -29,14 +29,14 @@ public class master extends OpMode {
         DrivePowers powers = ManualDrive.fieldCentric(
                 -gamepad1.left_stick_y,
                 -gamepad1.left_stick_x,
-                gamepad1.right_stick_x,
+                -gamepad1.right_stick_x,
                 follower.pose().heading()
         );
         {
             powers = ManualDrive.fieldCentric(
                     -gamepad1.left_stick_y,
                     -gamepad1.left_stick_x,
-                    gamepad1.right_stick_x,
+                    -gamepad1.right_stick_x,
                     follower.pose().heading()
             );
 
@@ -57,6 +57,20 @@ public class master extends OpMode {
     public void checkInput() {
         if (gamepad1.aWasPressed()) {
             telemetry.addLine("A pressed");
+            follower.update();
+        }
+
+        if (gamepad1.dpadUpWasPressed()) {
+            telemetry.addLine("Increasing Speed");
+            speed += 0.2;
+            speed = Math.min(speed, 1);
+            follower.update();
+        }
+
+        if (gamepad1.dpadDownWasPressed()) {
+            telemetry.addLine("Increasing Speed");
+            speed -= 0.2;
+            speed = Math.max(speed, 0.4);
             follower.update();
         }
     }

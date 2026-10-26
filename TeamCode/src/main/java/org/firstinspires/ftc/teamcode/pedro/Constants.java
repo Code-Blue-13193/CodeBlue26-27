@@ -23,12 +23,12 @@ public class Constants {
     static final double dtLength = 15.25;
     static final double dtWidth = 15.4375;
     public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
-        c.frontLeftName.set("frontLeft");
-        c.frontRightName.set("frontRight");
-        c.backLeftName.set("backLeft");
-        c.backRightName.set("backRight");
-        c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
-        c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
+        c.frontLeftName.set("leftFront");
+        c.frontRightName.set("rightFront");
+        c.backLeftName.set("leftBack");
+        c.backRightName.set("rightBack");
+        c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+        c.frontRightDirection.set(DcMotorSimple.Direction.REVERSE);
         c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
         c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
     });
