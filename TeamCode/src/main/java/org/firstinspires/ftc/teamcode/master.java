@@ -16,6 +16,8 @@ import com.pedropathing.paths.Path;
 @TeleOp(name = "Master")
 public class master extends OpMode {
     public double speed = 0.8;
+    double minSpeed = 0.6;
+    double maxSpeed = 1.2;
     private Follower follower; // you added this before
 
     @Override
@@ -27,18 +29,11 @@ public class master extends OpMode {
     {
         checkInput();
         DrivePowers powers = ManualDrive.fieldCentric(
-                -gamepad1.left_stick_y,
-                -gamepad1.left_stick_x,
-                -gamepad1.right_stick_x,
+                -gamepad1.left_stick_y*speed,
+                -gamepad1.left_stick_x*speed,
+                -gamepad1.right_stick_x*speed,
                 follower.pose().heading()
         );
-        {
-            powers = ManualDrive.fieldCentric(
-                    -gamepad1.left_stick_y,
-                    -gamepad1.left_stick_x,
-                    -gamepad1.right_stick_x,
-                    follower.pose().heading()
-            );
 
             follower.manual(powers);
             Pose robotPose = follower.pose(); // returns a Pose object
@@ -47,7 +42,6 @@ public class master extends OpMode {
             telemetry.addData("Robot Y", robotPose.y());
             telemetry.addData("Robot Heading", Math.toDegrees(robotPose.heading()));
             // Math.toDegrees() is a built-in java method
-        }
 
         ManualDrive.driveOrHold(follower, powers);
         follower.update();
@@ -63,14 +57,14 @@ public class master extends OpMode {
         if (gamepad1.dpadUpWasPressed()) {
             telemetry.addLine("Increasing Speed");
             speed += 0.2;
-            speed = Math.min(speed, 1);
+            speed = Math.min(speed, maxSpeed);
             follower.update();
         }
 
         if (gamepad1.dpadDownWasPressed()) {
             telemetry.addLine("Increasing Speed");
             speed -= 0.2;
-            speed = Math.max(speed, 0.4);
+            speed = Math.max(speed, minSpeed);
             follower.update();
         }
     }
