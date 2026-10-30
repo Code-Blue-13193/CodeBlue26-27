@@ -10,19 +10,13 @@ import com.pedropathing.api.Paths;
 import com.pedropathing.paths.Path;
 
 public class autoMain {
-
-    private Follower follower;
-
     private final PoseFactory p = PoseFactory.degrees();
 
-    public Pose start = p.of(82.5, 129.5, 270); //may be changed
-    final Pose parkControl = p.of(123.7187, 123.646, 0);
+    public Pose start = p.of(82.5, 129.5, 270); //may be changed depending on start pos
+    final Pose parkControl = p.of(123.7187, 123.646, 270);
     final Pose loadingZone = p.of(132.3026, 42.6889, 270);
 
     public Path park() {
-        return Paths.curve(start,parkControl,loadingZone).constant(loadingZone);
+        return Paths.curve(start,parkControl,loadingZone)/*.constant(loadingZone)*/;
     }
-
-
-
 }

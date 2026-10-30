@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.teleOp;
 
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
@@ -7,23 +7,35 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.OpModeStorage;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-
-import com.pedropathing.api.PoseFactory;
-import static com.pedropathing.api.Paths.*;
-import com.pedropathing.paths.Path;
 
 @TeleOp(name = "Master")
 public class master extends OpMode {
     public double speed = 0.8;
     double minSpeed = 0.6;
     double maxSpeed = 1.2;
-    private Follower follower; // you added this before
+    private Follower follower;
+
+    poseMaster poseMaster;
+
+    telemetryMaster telemetryMaster;
 
     @Override
     public void init() {
         follower = Constants.create(hardwareMap);
+
+        poseMaster = new poseMaster();
+
+        telemetryMaster = new telemetryMaster();
     }
+
+    @Override
+    public void start(){
+        follower.setPose(OpModeStorage.autonomousEndPose);
+        follower.update();
+    }
+
     @Override
     public void loop()
     {
@@ -65,6 +77,12 @@ public class master extends OpMode {
             telemetry.addLine("Increasing Speed");
             speed -= 0.2;
             speed = Math.max(speed, minSpeed);
+            follower.update();
+        }
+
+        if (gamepad1.leftTriggerWasPressed()) {
+            follower.setPose(poseMaster.blueLineZone);
+            telemetry.addLine("Recalibrated position");
             follower.update();
         }
     }

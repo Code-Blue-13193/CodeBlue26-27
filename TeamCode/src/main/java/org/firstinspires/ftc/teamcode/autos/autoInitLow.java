@@ -12,6 +12,7 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.OpModeStorage;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 @Autonomous
@@ -22,10 +23,7 @@ public class autoInitLow extends OpMode {
     private Follower follower;
 
     private final PoseFactory p = PoseFactory.degrees();
-
     public Pose start = p.of(105.5, 129.5, 270);
-
-
 
     @Override
     public void init() {
@@ -51,5 +49,10 @@ public class autoInitLow extends OpMode {
         follower.update();
         Scheduler.execute();
         // add your other methods needed in the loop here
+    }
+
+    @Override
+    public void stop() {
+        OpModeStorage.autonomousEndPose = follower.pose(); //saves your position in that file
     }
 }
