@@ -6,6 +6,7 @@ import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.OpModeStorage;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -21,6 +22,8 @@ public class master extends OpMode {
 
     telemetryMaster telemetryMaster;
 
+    DcMotor intake;
+
     @Override
     public void init() {
         follower = Constants.create(hardwareMap);
@@ -28,6 +31,8 @@ public class master extends OpMode {
         poseMaster = new poseMaster();
 
         telemetryMaster = new telemetryMaster();
+
+        intake = hardwareMap.get(DcMotor.class, "intake");
     }
 
     @Override
@@ -50,41 +55,46 @@ public class master extends OpMode {
             follower.manual(powers);
             Pose robotPose = follower.pose(); // returns a Pose object
 
-            telemetry.addData("Robot X", robotPose.x());
-            telemetry.addData("Robot Y", robotPose.y());
-            telemetry.addData("Robot Heading", Math.toDegrees(robotPose.heading()));
+        telemetryMaster.AddData("Robot X", Double.toString(robotPose.x()),0);
+        telemetryMaster.AddData("Robot Y", Double.toString(robotPose.y()),0);
+        telemetryMaster.AddData("Robot Heading", Double.toString(Math.toDegrees(robotPose.heading())),0);
             // Math.toDegrees() is a built-in java method
 
         ManualDrive.driveOrHold(follower, powers);
         follower.update();
+        telemetryMaster.Update(telemetry);
         telemetry.update();
     }
 
     public void checkInput() {
         if (gamepad1.aWasPressed()) {
-            telemetry.addLine("A pressed");
+            telemetryMaster.AddData("Input", "A", 10);
             follower.update();
         }
 
         if (gamepad1.dpadUpWasPressed()) {
-            telemetry.addLine("Increasing Speed");
             speed += 0.2;
             speed = Math.min(speed, maxSpeed);
+            telemetryMaster.AddData("Increasing Speed", Double.toString(speed), 10);
             follower.update();
         }
 
         if (gamepad1.dpadDownWasPressed()) {
-            telemetry.addLine("Increasing Speed");
             speed -= 0.2;
             speed = Math.max(speed, minSpeed);
+            telemetryMaster.AddData("Decreasing Speed", Double.toString(speed), 10);
             follower.update();
         }
 
-        if (gamepad1.leftTriggerWasPressed()) {
+        if (gamepad1.leftBumperWasPressed()) {
             follower.setPose(poseMaster.blueLineZone);
-            telemetry.addLine("Recalibrated position");
+            telemetryMaster.AddData("Position", "Recalibrated", 10);
             follower.update();
         }
+
+        intake.setPower(gamepad1.right_trigger_pressed?0.5:0);
+
+        intake.setPower(gamepad1.left_trigger_pressed?-0.5:0);
     }
 }
 

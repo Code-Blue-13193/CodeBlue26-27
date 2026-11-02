@@ -50,6 +50,14 @@ public class autoInitHigh extends OpMode {
         follower.update();
         Scheduler.execute();
         // add your other methods needed in the loop here
+
+        telemetry.addData("Robot Pose", follower.pose());
+        telemetry.addData("Closest Pose", follower.closestPose());
+        telemetry.addData("Completion", follower.completion());
+        telemetry.addData("Parametric Completion", follower.parametricCompletion());
+        telemetry.addData("Path Index", follower.pathIndex());
+        telemetry.addData("Heading", follower.pose().heading());
+        telemetry.update();
     }
 
     @Override

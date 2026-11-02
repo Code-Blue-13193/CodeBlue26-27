@@ -17,6 +17,6 @@ public class autoMain {
     final Pose loadingZone = p.of(132.3026, 42.6889, 270);
 
     public Path park() {
-        return Paths.curve(start,parkControl,loadingZone)/*.constant(loadingZone)*/;
+        return Paths.curve(start,parkControl,loadingZone).linear(start,loadingZone);
     }
 }
