@@ -3,15 +3,18 @@ package org.firstinspires.ftc.teamcode.teleOp;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class telemetryMaster {
     public ArrayList<telemetryStruct> telemetryStructs = new ArrayList<telemetryStruct>();
 
     public void Update(Telemetry telemetry) {
         if (telemetryStructs.isEmpty()) { return;}
-        for (telemetryStruct call : telemetryStructs) {
+        Iterator<telemetryStruct> it = telemetryStructs.iterator();
+        while (it.hasNext()) {
+            telemetryStruct call = it.next();
             if (call.timer < 0) {
-                telemetryStructs.remove(call);
+                it.remove();
                 continue;
             }
             call.timer-=1;
