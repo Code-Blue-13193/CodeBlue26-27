@@ -68,27 +68,27 @@ public class master extends OpMode {
 
     public void checkInput() {
         if (gamepad1.aWasPressed()) {
-            telemetryMaster.AddData("Input", "A", 10);
+            telemetryMaster.AddData("Input", "A", 30);
             follower.update();
         }
 
         if (gamepad1.dpadUpWasPressed()) {
             speed += 0.2;
             speed = Math.min(speed, maxSpeed);
-            telemetryMaster.AddData("Increasing Speed", Double.toString(speed), 10);
+            telemetryMaster.AddData("Increasing Speed", Double.toString(speed), 30);
             follower.update();
         }
 
         if (gamepad1.dpadDownWasPressed()) {
             speed -= 0.2;
             speed = Math.max(speed, minSpeed);
-            telemetryMaster.AddData("Decreasing Speed", Double.toString(speed), 10);
+            telemetryMaster.AddData("Decreasing Speed", Double.toString(speed), 30);
             follower.update();
         }
 
         if (gamepad1.leftBumperWasPressed()) {
             follower.setPose(poseMaster.blueLineZone);
-            telemetryMaster.AddData("Position", "Recalibrated", 10);
+            telemetryMaster.AddData("Position", "Recalibrated", 30);
             follower.update();
         }
 

@@ -23,7 +23,9 @@ public class autoInitHigh extends OpMode {
     autoMain main = new autoMain();
 
     private Follower follower;
+
     private final PoseFactory p = PoseFactory.degrees();
+
     public Pose start = p.of(82.5, 129.5, 270);
 
     @Override
@@ -36,7 +38,8 @@ public class autoInitHigh extends OpMode {
     }
     private Command autoRoutine() {
         return sequential(
-                follow(follower, main.park())
+                follow(follower, main.path1()),
+                follow(follower, main.path2())
         );
     }
 

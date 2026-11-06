@@ -13,10 +13,14 @@ public class autoMain {
     private final PoseFactory p = PoseFactory.degrees();
 
     public Pose start = p.of(82.5, 129.5, 270); //may be changed depending on start pos
-    final Pose parkControl = p.of(123.7187, 123.646, 270);
-    final Pose loadingZone = p.of(132.3026, 42.6889, 270);
+    private final Pose path1 = p.of(123.2673, 129.4928, 270);
+    private final Pose point2 = p.of(128.8486, 24.3684, 270);
 
-    public Path park() {
-        return Paths.curve(start,parkControl,loadingZone).linear(start,loadingZone);
+    public Path path1() {
+        return Paths.line(start, path1).constant(path1);
+    }
+
+    public Path path2() {
+        return Paths.line(path1, point2).constant(point2);
     }
 }

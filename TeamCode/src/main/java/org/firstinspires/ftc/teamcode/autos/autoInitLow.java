@@ -35,7 +35,8 @@ public class autoInitLow extends OpMode {
     }
     private Command autoRoutine() {
         return sequential(
-                follow(follower, main.park())
+                follow(follower, main.path1()),
+                follow(follower, main.path2())
         );
     }
 
@@ -49,6 +50,7 @@ public class autoInitLow extends OpMode {
         follower.update();
         Scheduler.execute();
         // add your other methods needed in the loop here
+
         telemetry.addData("Robot Pose", follower.pose());
         telemetry.addData("Closest Pose", follower.closestPose());
         telemetry.addData("Completion", follower.completion());
