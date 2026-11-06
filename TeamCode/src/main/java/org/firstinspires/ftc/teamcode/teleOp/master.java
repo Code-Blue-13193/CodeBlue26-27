@@ -46,8 +46,8 @@ public class master extends OpMode {
     {
         checkInput();
         DrivePowers powers = ManualDrive.fieldCentric(
-                -gamepad1.left_stick_y*speed,
-                -gamepad1.left_stick_x*speed,
+                gamepad1.left_stick_y*speed,
+                gamepad1.left_stick_x*speed,
                 -gamepad1.right_stick_x*speed,
                 follower.pose().heading()
         );
