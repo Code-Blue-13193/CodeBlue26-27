@@ -14,7 +14,7 @@ public class autoMain {
 
     public Pose start = p.of(82.5, 129.5, 270); //may be changed depending on start pos
     private final Pose path1 = p.of(123.2673, 129.4928, 270);
-    private final Pose point2 = p.of(128.8486, 24.3684, 270);
+    private final Pose point2 = p.of(130.16, 24.65, 270);
 
     public Path path1() {
         return Paths.line(start, path1).constant(path1);

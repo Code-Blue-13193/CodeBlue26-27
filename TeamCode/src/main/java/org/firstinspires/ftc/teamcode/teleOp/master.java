@@ -7,8 +7,10 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.OpModeStorage;
+import org.firstinspires.ftc.teamcode.outtake.outtake;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 @TeleOp(name = "Master")
@@ -22,6 +24,8 @@ public class master extends OpMode {
 
     telemetryMaster telemetryMaster;
 
+    outtake outtake;
+
     DcMotor intake;
 
     @Override
@@ -33,6 +37,10 @@ public class master extends OpMode {
         telemetryMaster = new telemetryMaster();
 
         intake = hardwareMap.get(DcMotor.class, "intake");
+
+        outtake = new outtake();
+
+        outtake.init(hardwareMap);
     }
 
     @Override
@@ -45,7 +53,7 @@ public class master extends OpMode {
     public void loop()
     {
         checkInput();
-        DrivePowers powers = ManualDrive.fieldCentric(
+        /*DrivePowers powers = ManualDrive.fieldCentric(
                 gamepad1.left_stick_y*speed,
                 gamepad1.left_stick_x*speed,
                 -gamepad1.right_stick_x*speed,
@@ -53,15 +61,24 @@ public class master extends OpMode {
         );
 
             follower.manual(powers);
-            Pose robotPose = follower.pose(); // returns a Pose object
-
-        telemetryMaster.AddData("Robot X", Double.toString(robotPose.x()),0);
-        telemetryMaster.AddData("Robot Y", Double.toString(robotPose.y()),0);
-        telemetryMaster.AddData("Robot Heading", Double.toString(Math.toDegrees(robotPose.heading())),0);
             // Math.toDegrees() is a built-in java method
 
         ManualDrive.driveOrHold(follower, powers);
         follower.update();
+        */
+        follower.manual(
+                -gamepad1.left_stick_y,
+                gamepad1.left_stick_x,
+                gamepad1.right_stick_x
+        );
+        follower.update();
+
+        Pose robotPose = follower.pose(); // returns a Pose object
+
+        telemetryMaster.AddData("Robot X", Double.toString(robotPose.x()),0);
+        telemetryMaster.AddData("Robot Y", Double.toString(robotPose.y()),0);
+        telemetryMaster.AddData("Robot Heading", Double.toString(Math.toDegrees(robotPose.heading())),0);
+
         telemetryMaster.Update(telemetry);
         telemetry.update();
     }
@@ -69,6 +86,7 @@ public class master extends OpMode {
     public void checkInput() {
         if (gamepad1.aWasPressed()) {
             telemetryMaster.AddData("Input", "A", 30);
+            outtake.Shoot(hardwareMap);
             follower.update();
         }
 
@@ -92,7 +110,7 @@ public class master extends OpMode {
             follower.update();
         }
 
-        intake.setPower(gamepad1.right_trigger_pressed?0.5:0);
+
 
         intake.setPower(gamepad1.left_trigger_pressed?-0.5:0);
     }
