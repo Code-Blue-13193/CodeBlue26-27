@@ -12,9 +12,13 @@ import com.pedropathing.paths.Path;
 public class autoMain {
     private final PoseFactory p = PoseFactory.degrees();
 
-    public Pose start = p.of(82.5, 129.5, 270); //may be changed depending on start pos
-    private final Pose path1 = p.of(123.2673, 129.4928, 270);
-    private final Pose point2 = p.of(128.8486, 24.3684, 270);
+    private final PoseFactory poseFactory = PoseFactory.degrees();
+
+    public Pose start = poseFactory.of(110.60138705416117, 132.80614266842804, 90);
+    private final Pose path1 = poseFactory.of(84.0561, 106.2827, 270);
+    private final Pose point2 = poseFactory.of(111.566, 106.0674, 270);
+    private final Pose point3Start = poseFactory.of(111.566, 106.0674, 270);
+    private final Pose point3 = poseFactory.of(130.6203, 43.9206, 0);
 
     public Path path1() {
         return Paths.line(start, path1).constant(path1);
@@ -22,5 +26,9 @@ public class autoMain {
 
     public Path path2() {
         return Paths.line(path1, point2).constant(point2);
+    }
+
+    public Path path3() {
+        return Paths.line(point3Start, point3).linear(point3Start, point3);
     }
 }

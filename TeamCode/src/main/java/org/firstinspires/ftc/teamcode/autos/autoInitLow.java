@@ -23,7 +23,7 @@ public class autoInitLow extends OpMode {
     private Follower follower;
 
     private final PoseFactory p = PoseFactory.degrees();
-    public Pose start = p.of(105.5, 129.5, 270);
+    public Pose start = p.of(110.60138705416117, 132.80614266842804, 270);
 
     @Override
     public void init() {
@@ -36,7 +36,8 @@ public class autoInitLow extends OpMode {
     private Command autoRoutine() {
         return sequential(
                 follow(follower, main.path1()),
-                follow(follower, main.path2())
+                follow(follower, main.path2()),
+                follow(follower, main.path3())
         );
     }
 
