@@ -14,7 +14,7 @@ public class autoMain {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    public Pose start = poseFactory.of(110.60138705416117, 132.80614266842804, 90);
+    public Pose start = poseFactory.of(110.60138705416117, 132.80614266842804, 270);
     private final Pose path1 = poseFactory.of(84.0561, 106.2827, 270);
     private final Pose point2 = poseFactory.of(111.566, 106.0674, 270);
     private final Pose point3Start = poseFactory.of(111.566, 106.0674, 270);

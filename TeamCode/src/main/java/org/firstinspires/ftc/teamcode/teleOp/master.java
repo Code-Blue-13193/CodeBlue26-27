@@ -110,8 +110,6 @@ public class master extends OpMode {
             follower.update();
         }
 
-
-
         intake.setPower(gamepad1.left_trigger_pressed?-0.5:0);
     }
 }

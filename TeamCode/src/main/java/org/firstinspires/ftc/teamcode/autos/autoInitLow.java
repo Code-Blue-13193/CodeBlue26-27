@@ -4,6 +4,8 @@ import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
+import android.text.format.Time;
+
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
@@ -11,8 +13,10 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.OpModeStorage;
+import org.firstinspires.ftc.teamcode.outtake.outtake;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 @Autonomous
@@ -25,9 +29,18 @@ public class autoInitLow extends OpMode {
     private final PoseFactory p = PoseFactory.degrees();
     public Pose start = p.of(110.60138705416117, 132.80614266842804, 270);
 
+    outtake outtake;
+
+    ElapsedTime loopTimer = new ElapsedTime();
+
     @Override
     public void init() {
         main.start = start;
+
+        outtake = new outtake();
+
+        outtake.init(hardwareMap);
+
         Scheduler.reset();
         follower = Constants.create(hardwareMap);
         follower.setPose(start);
@@ -36,14 +49,30 @@ public class autoInitLow extends OpMode {
     private Command autoRoutine() {
         return sequential(
                 follow(follower, main.path1()),
+                shoot,
                 follow(follower, main.path2()),
                 follow(follower, main.path3())
         );
     }
 
+    Command shoot = Command.build()
+            .setStart(this::shootInit
+            )
+            .setDone(() ->
+                loopTimer.milliseconds()>100
+            )
+            .setEnd(endCondition ->
+                outtake.Shoot(hardwareMap)
+            );
+
     @Override
     public void start() {
         schedule(autoRoutine());
+    }
+
+    void shootInit() {
+        outtake.Shoot(hardwareMap);
+        loopTimer.reset();
     }
 
     @Override
