@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.pedropathing.follower.Follower;
 
 import org.firstinspires.ftc.teamcode.OpModeStorage;
+import org.firstinspires.ftc.teamcode.outtake.outtake;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import com.pedropathing.api.PoseFactory;
@@ -13,6 +14,8 @@ import com.pedropathing.math.Pose;
 
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
@@ -28,9 +31,18 @@ public class autoInitHigh extends OpMode {
 
     public Pose start = p.of(79.01155878467635, 132.80614266842804, 270);
 
+    outtake outtake;
+
+    ElapsedTime loopTimer = new ElapsedTime();
+
     @Override
     public void init() {
         main.start = start;
+
+        outtake = new outtake();
+
+        outtake.init(hardwareMap);
+
         Scheduler.reset();
         follower = Constants.create(hardwareMap);
         follower.setPose(start);
@@ -39,14 +51,28 @@ public class autoInitHigh extends OpMode {
     private Command autoRoutine() {
         return sequential(
                 follow(follower, main.path1()),
+                shoot,
                 follow(follower, main.path2()),
                 follow(follower, main.path3())
         );
     }
-
+    Command shoot = Command.build()
+            .setStart(this::shootInit
+            )
+            .setDone(() ->
+                    loopTimer.milliseconds()>100
+            )
+            .setEnd(endCondition ->
+                    outtake.Shoot(hardwareMap)
+            );
     @Override
     public void start() {
         schedule(autoRoutine());
+    }
+
+    void shootInit() {
+        outtake.Shoot(hardwareMap);
+        loopTimer.reset();
     }
 
     @Override
